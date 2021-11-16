@@ -1,8 +1,8 @@
 package com.example.tournament.ws;
 
-
 import com.example.tournament.model.Cart;
 import com.example.tournament.model.CheckoutParams;
+import com.example.tournament.model.ProdIds;
 import com.example.tournament.svc.StripePaymentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -23,75 +23,69 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value="/store")
+@RequestMapping(value = "/store")
 public class StripePaymentController {
 
-    @Value("${stripe.apiKeySecret}")
-    private String API_SECRET_KEY;
+  @Value("${stripe.apiKeySecret}")
+  private String API_SECRET_KEY;
 
-//    private final StripePaymentService stripePaymentService;
+  //    private final StripePaymentService stripePaymentService;
 
-//    @Autowired
-//    public StripePaymentController(StripePaymentService stripePaymentService) {this.stripePaymentService = stripePaymentService;}
-    public StripePaymentController() {}
+  //    @Autowired
+  //    public StripePaymentController(StripePaymentService stripePaymentService)
+  // {this.stripePaymentService = stripePaymentService;}
+  public StripePaymentController() {}
 
-    @CrossOrigin(origins = "*")
-    @PostMapping("/create-checkout-session")
-    public HashMap<String, String> checkoutSession(
-            HttpServletResponse response, @RequestBody Cart cart
-    ) throws StripeException /*JsonProcessingException*/ {
-        Stripe.apiKey=API_SECRET_KEY;
-        String YOUR_DOMAIN = "http://localhost:3000/checkout";
-//        ObjectMapper mapper = new ObjectMapper();
-//        String cartJson = mapper.writeValueAsString( cart );
+  @CrossOrigin(origins = "*")
+  @PostMapping("/create-checkout-session")
+  public HashMap<String, String> checkoutSession(
+      HttpServletResponse response, @RequestBody Cart cart)
+      throws StripeException /*JsonProcessingException*/ {
+    Stripe.apiKey = API_SECRET_KEY;
+    String YOUR_DOMAIN = "http://localhost:3000/checkout";
 
-        ObjectMapper mapper = new ObjectMapper();
+    HashMap<String, Long> itemsToBuy = new HashMap<String, Long>();
 
-// Convert POJO to Map
-        Map<String, Object> map =
-                mapper.convertValue(cart, new TypeReference<Map<String, Object>>() {});
-        System.out.println(map);
+    //        cart.items.stream().filter(i -> i.quantity == 0).forEach(System.out::println);
+    cart.getItems().stream()
+        .filter(i -> i.quantity != 0)
+        .forEach(i -> itemsToBuy.put(i.name, i.quantity) /*i.getQuantity()*/);
+    //        cart.getItems().stream().filter(i -> i.name == "SmallHoodie").forEach(i ->
+    // System.out.println("yep"));
+    //        System.out.println(itemsToBuy);
 
-        for(Map.Entry<String,Object> entry : map.entrySet()) {
-            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+    //        cart.getItems().stream().filter(i -> i.quantity != 0).forEach(i ->
+    // System.out.println(i.name + i.quantity +"Hello"));
+    //        cart.getItems().stream().filter(i -> i.name.equals( "SmallHoodie")).forEach(i ->
+    // System.out.println(itemsToBuy.get(i.name)));
 
-        }
-
-
-        SessionCreateParams params =
-                SessionCreateParams.builder()
-                        .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
-                        .setMode(SessionCreateParams.Mode.PAYMENT)
-                        .setSuccessUrl(YOUR_DOMAIN + "?success=true")
-                        .setCancelUrl(YOUR_DOMAIN + "?canceled=true")
+    ProdIds prodIds = new ProdIds();
+    //        System.out.println(prodIds.getProductIdMap());
 
 
 
-//                        for (int i = 0; i < map.size(); i ++) {
-//                            System.out.println(i);
-//                            }
 
-                            .addLineItem(
+    SessionCreateParams.Builder builder =
+        SessionCreateParams.builder()
+            .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
+            .setMode(SessionCreateParams.Mode.PAYMENT)
+            .setSuccessUrl(YOUR_DOMAIN + "?success=true")
+            .setCancelUrl(YOUR_DOMAIN + "?canceled=true");
 
-                                    SessionCreateParams.LineItem.builder()
-                                            .setQuantity(Long.valueOf(cart.getHoodie().getItemInfo().getSizeQuantity().getSm()))
-                                            .setPrice(cart.getHoodie().getItemInfo().getPriceId())
-    //                                        .set
-    //                                        .putExtraParam("size", "xl")
-                                            .build())
+    for (String key : itemsToBuy.keySet()) {
 
-//                            .addLineItem(
-//                                    SessionCreateParams.LineItem.builder()
-//                                            .setQuantity(Long.valueOf(cart.getHoodie().getItemInfo().getSizeQuantity().getLg()))
-//                                            .setPrice(cart.getHoodie().getItemInfo().getPriceId())
-//                                            .build())
-                        .build();
-        Session session = Session.create(params);
-//        response.setHeader("location", session.getUrl());
-//        response.setStatus(302);
-        HashMap<String, String> result = new HashMap<>();
-        result.put("url", session.getUrl() );
-        return result;
+      builder.addLineItem(
+          SessionCreateParams.LineItem.builder()
+              .setQuantity(itemsToBuy.get(key))
+              .setPrice(prodIds.getProductIdMap().get(key))
+              .build());
     }
-
+    SessionCreateParams params = builder.build();
+    Session session = Session.create(params);
+    //        response.setHeader("location", session.getUrl());
+    //        response.setStatus(302);
+    HashMap<String, String> result = new HashMap<>();
+    result.put("url", session.getUrl());
+    return result;
+  }
 }
