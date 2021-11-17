@@ -10,6 +10,7 @@ public class TournamentModel {
     public List<Tournament> tournament = null;
 
     public List<Tournament> getTournament() {
+
         return tournament;
     }
 

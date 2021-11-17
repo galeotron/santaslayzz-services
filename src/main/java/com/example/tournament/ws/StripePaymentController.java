@@ -1,9 +1,7 @@
 package com.example.tournament.ws;
 
-import com.example.tournament.model.Cart;
-import com.example.tournament.model.CheckoutParams;
-import com.example.tournament.model.ProdIds;
-import com.example.tournament.svc.StripePaymentService;
+import com.example.tournament.model.*;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -44,6 +43,8 @@ public class StripePaymentController {
     Stripe.apiKey = API_SECRET_KEY;
     String YOUR_DOMAIN = "http://localhost:3000/checkout";
 
+
+
     HashMap<String, Long> itemsToBuy = new HashMap<String, Long>();
 
     //        cart.items.stream().filter(i -> i.quantity == 0).forEach(System.out::println);
@@ -52,7 +53,7 @@ public class StripePaymentController {
         .forEach(i -> itemsToBuy.put(i.name, i.quantity) /*i.getQuantity()*/);
     //        cart.getItems().stream().filter(i -> i.name == "SmallHoodie").forEach(i ->
     // System.out.println("yep"));
-    //        System.out.println(itemsToBuy);
+//            System.out.println(itemsToBuy);
 
     //        cart.getItems().stream().filter(i -> i.quantity != 0).forEach(i ->
     // System.out.println(i.name + i.quantity +"Hello"));
@@ -64,6 +65,12 @@ public class StripePaymentController {
 
 
 
+//    if (itemsToBuy.get("TournamentTicket") > 0 ) {
+//      List<Tournament> tournamentModel = new List<Tournament>() {
+//      }
+//      cart.getItems().stream().forEach
+//      System.out.println(tournamentModel);
+//    }
 
     SessionCreateParams.Builder builder =
         SessionCreateParams.builder()

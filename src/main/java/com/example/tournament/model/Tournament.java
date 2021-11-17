@@ -41,6 +41,8 @@ public class Tournament {
     public Integer game4Kills;
     @JsonProperty("Game4Placement")
     public Integer game4Placement;
+    @JsonProperty("TournamentName")
+    public Integer tournamentName;
 
     public String getTeamName() {
         return teamName;
@@ -210,6 +212,15 @@ public class Tournament {
 
     public Tournament setGame4Placement(Integer game4Placement) {
         this.game4Placement = game4Placement;
+        return this;
+    }
+
+    public Integer getTournamentName() {
+        return tournamentName;
+    }
+
+    public Tournament setTournamentName(Integer tournamentName) {
+        this.tournamentName = tournamentName;
         return this;
     }
 }
