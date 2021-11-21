@@ -5,11 +5,12 @@ import javax.persistence.*;
 @Entity
 public class TournamentDB {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column (name="id")
-    private long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @Column (name="id")
+//    private long id;
 
+    @Id
     @Column (name="teamName")
     private String teamName;
 
@@ -64,9 +65,12 @@ public class TournamentDB {
     @Column (name="game4Placement")
     private Integer game4Placement;
 
+    @Column (name="passcode")
+    private Integer passcode;
 
-    public TournamentDB(long id, String teamName, String discordName, String playerName1, String officialName1, String playerName2, String officialName2, String playerName3, String officialName3, String playerName4, String officialName4, Integer game1Kills, Integer game1Placement, Integer game2Kills, Integer game2Placement, Integer game3Kills, Integer game3Placement, Integer game4Kills, Integer game4Placement) {
-        this.id = id;
+
+    public TournamentDB(Integer passcode, String teamName, String discordName, String playerName1, String officialName1, String playerName2, String officialName2, String playerName3, String officialName3, String playerName4, String officialName4, Integer game1Kills, Integer game1Placement, Integer game2Kills, Integer game2Placement, Integer game3Kills, Integer game3Placement, Integer game4Kills, Integer game4Placement) {
+//        this.id = id;
         this.teamName = teamName;
         this.discordName = discordName;
         this.playerName1 = playerName1;
@@ -85,19 +89,20 @@ public class TournamentDB {
         this.game3Placement = game3Placement;
         this.game4Kills = game4Kills;
         this.game4Placement = game4Placement;
+        this.passcode = passcode;
     }
 
     public TournamentDB() {
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public TournamentDB setId(long id) {
-        this.id = id;
-        return this;
-    }
+//    public long getId() {
+//        return id;
+//    }
+//
+//    public TournamentDB setId(long id) {
+//        this.id = id;
+//        return this;
+//    }
 
     public String getTeamName() {
         return teamName;
@@ -259,5 +264,19 @@ public class TournamentDB {
     public TournamentDB setGame4Placement(Integer game4Placement) {
         this.game4Placement = game4Placement;
         return this;
+    }
+
+    public Integer getPasscode() {
+        return passcode;
+    }
+
+    public TournamentDB setPasscode(Integer passcode) {
+        this.passcode = passcode;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Team name: " + teamName;
     }
 }

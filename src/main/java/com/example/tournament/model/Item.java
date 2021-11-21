@@ -24,19 +24,19 @@ public class Item {
     @JsonProperty("DiscordName")
     public String discordName;
     @JsonProperty("OfficialName1")
-    public Long officialName1;
+    public String officialName1;
     @JsonProperty("OfficialName2")
     public String officialName2;
     @JsonProperty("OfficialName3")
-    public Long officialName3;
+    public String officialName3;
     @JsonProperty("OfficialName4")
     public String officialName4;
     @JsonProperty("PlayerName1")
-    public Long playerName1;
+    public String playerName1;
     @JsonProperty("PlayerName2")
     public String playerName2;
     @JsonProperty("PlayerName3")
-    public Long playerName3;
+    public String playerName3;
     @JsonProperty("PlayerName4")
     public String playerName4;
     @JsonProperty("TeamName")
@@ -58,7 +58,7 @@ public class Item {
         return discordName;
     }
 
-    public Long getOfficialName1() {
+    public String getOfficialName1() {
         return officialName1;
     }
 
@@ -66,7 +66,7 @@ public class Item {
         return officialName2;
     }
 
-    public Long getOfficialName3() {
+    public String getOfficialName3() {
         return officialName3;
     }
 
@@ -74,7 +74,7 @@ public class Item {
         return officialName4;
     }
 
-    public Long getPlayerName1() {
+    public String getPlayerName1() {
         return playerName1;
     }
 
@@ -82,7 +82,7 @@ public class Item {
         return playerName2;
     }
 
-    public Long getPlayerName3() {
+    public String getPlayerName3() {
         return playerName3;
     }
 
