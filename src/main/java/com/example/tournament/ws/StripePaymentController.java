@@ -76,8 +76,8 @@ public class StripePaymentController {
         SessionCreateParams.builder()
             .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
             .setMode(SessionCreateParams.Mode.PAYMENT)
-            .setSuccessUrl(YOUR_DOMAIN + "?success=true")
-            .setCancelUrl(YOUR_DOMAIN + "?canceled=true");
+            .setSuccessUrl("http://localhost:3000/checkout" + "?success=true")
+            .setCancelUrl("http://localhost:3000/checkout" + "?canceled=true");
 
     for (String key : itemsToBuy.keySet()) {
 

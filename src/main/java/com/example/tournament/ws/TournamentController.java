@@ -53,7 +53,7 @@ public class TournamentController {
   @Autowired private TournamentRepository tournamentRepository;
 
   @CrossOrigin(origins = "*")
-  @GetMapping("/tournaments")
+  @GetMapping("/tournamentData")
   public List<TournamentDB> getAllTournaments() {
     return tournamentRepository.findAll();
   }
@@ -246,4 +246,10 @@ public class TournamentController {
       return ResponseEntity.ok(tournamentDBInfo);
     }
   }
+
+  @DeleteMapping("/admin/delete")
+  public void deleteTournamentInfo() {
+        tournamentRepository.deleteAll();
+  }
 }
+
